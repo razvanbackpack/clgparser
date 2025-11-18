@@ -20,4 +20,9 @@ Example:
 
 changelog.md
 ```
+
+```
+$ClgView = new ClgView('CHANGELOG.md');
+$ClgView->parse();
+```
 ![Output](assets/v010.png)
