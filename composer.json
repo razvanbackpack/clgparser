@@ -2,10 +2,8 @@
     "name": "razvanbackpack/clgview",
     "description": "A simple script to display changelog nicely. In PHP.",
     "type": "library",
-    "require": {
-        "league/commonmark": "^2.7"
-    },
-    "license": "Free For All",
+    "require": {},
+    "license": "LGPL-3.0-or-later",
     "autoload": {
         "psr-4": {
             "ClgView\\": "src/"

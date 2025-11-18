@@ -1,3 +1,5 @@
+[![License](https://img.shields.io/github/license/razvanbackpack/clgparser)](https://github.com/razvanbackpack/clgparser/blob/main/LICENSE)
+
 A simple php script that parses and displays changelog files.
 
 
