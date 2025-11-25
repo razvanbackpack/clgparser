@@ -11,7 +11,7 @@ require __DIR__ . '/../vendor/autoload.php';
 use ClgView\ClgView;
 
 $options = [
-    'tab' => '&nbsp;&nbsp;&nbsp;',
+    'space' => '&nbsp;',
     'subtitles_as_labels' => true,
     'item_ids' => [
         'title' => 'title_id',

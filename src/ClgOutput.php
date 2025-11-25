@@ -4,7 +4,7 @@ namespace ClgView;
 class ClgOutput {
     private array $items = [];
     private array $options = [
-        'tab' => '&nbsp;&nbsp;&nbsp;',
+        'space' => '',
         'subtitles_as_labels' => true,
         'item_ids' => [
             'title' => 'title_id',
@@ -24,6 +24,7 @@ class ClgOutput {
 
     /**
      * @param $parsedItems array
+     * @param $options array
      */
     public function __construct(array $parsedItems, array $options)
     {
@@ -37,7 +38,7 @@ class ClgOutput {
      */
     private function validateOptions(array $options): bool {
         $missing_fields = [];
-        $required_fields = ['tab', 'subtitles_as_labels', 'item_ids', 'item_classes'];
+        $required_fields = ['space', 'subtitles_as_labels', 'item_ids', 'item_classes'];
 
         foreach ($required_fields as $field) {
             if (!isset($options[$field])) {
@@ -115,8 +116,9 @@ class ClgOutput {
     /**
      * @param $in_list bool
      * @param $item array
+     * @param $loop_count int
      */
-    private function handleListItem(&$in_list, $item, &$loop_count): void
+    private function handleListItem(bool &$in_list, array $item, int &$loop_count): void
     {
         if (!$in_list) // output list container
             '<div id ="' . $this->options['item_ids']['list_container'] . $loop_count . '" class="' . $this->options['item_classes']['list_container'] . '">';
@@ -126,13 +128,13 @@ class ClgOutput {
         echo '<div style="display:flex">'; // per-item container
             if ($this->options['subtitles_as_labels']) {
                 //item marker
-                echo '<div style="flex: 0.5" id ="' . $this->options['item_ids']['marker'] . $loop_count .  '" class="' . $this->options['item_classes']['marker'] . '">';
+                echo '<div style="flex: 0.15" id ="' . $this->options['item_ids']['marker'] . $loop_count .  '" class="' . $this->options['item_classes']['marker'] . '">';
                     echo $item['level'] == 0 ? $item['marker'] : '';
                 echo '</div>';
             }
             //item
             echo '<div style="flex: 2" id ="' . $this->options['item_ids']['list_item'] . $loop_count .  '" class="' . $this->options['item_classes']['list_item'] . '">';
-                echo str_repeat($this->options['tab'], $item['level']) . $item['text'];
+                echo str_repeat($this->options['space'], $item['level']) . $item['text'];
             echo '</div>';
         echo '</div>'; // close per-item container
 
@@ -141,8 +143,9 @@ class ClgOutput {
 
     /**
      * @param $item array
+     * @param $loop_count int
      */
-    private function handleTitleItem($item, &$loop_count): void
+    private function handleTitleItem(array $item, int &$loop_count): void
     {
         if($item['level'] == 1) {
             echo '<h2 id ="'.$this->options['item_ids']['title']. $loop_count . '" class="'.$this->options['item_classes']['title'].'">';
@@ -158,7 +161,7 @@ class ClgOutput {
 
             echo '<h3 id ="'.$this->options['item_ids']['title']. $loop_count . '" class="'.$this->options['item_classes']['title'].'">';
                 echo $item['text'];
-            echo '</h2>';
+            echo '</h3>';
 
             $loop_count++;
         }
