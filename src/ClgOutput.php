@@ -52,23 +52,9 @@ class ClgOutput {
             );
         }
 
-        if (isset($options['item_ids'])) {
-            $required_ids = ['title', 'subtitle', 'marker', 'list_container', 'list_item'];
-            foreach ($required_ids as $id) {
-                if (!isset($options['item_ids'][$id])) {
-                    $missing_fields[] = "item_ids[$id]";
-                }
-            }
-        }
-
-        if (isset($options['item_classes'])) {
-            $required_classes = ['title', 'subtitle', 'marker', 'list_container', 'list_item'];
-            foreach ($required_classes as $class) {
-                if (!isset($options['item_classes'][$class])) {
-                    $missing_fields[] = "item_classes[$class]";
-                }
-            }
-        }
+        $nested_required = ['title', 'subtitle', 'marker', 'list_container', 'list_item'];
+        $this->validateNestedOptions($options, 'item_ids', $nested_required, $missing_fields);
+        $this->validateNestedOptions($options, 'item_classes', $nested_required, $missing_fields);
 
         if (!empty($missing_fields)) {
             throw new \InvalidArgumentException(
@@ -77,6 +63,23 @@ class ClgOutput {
         }
 
         return true;
+    }
+
+    /**
+     * @param $options array
+     * @param $key string
+     * @param $required_keys array
+     * @param $missing_fields array
+     */
+    private function validateNestedOptions(array $options, string $key, array $required_keys, array &$missing_fields): void {
+        if (!isset($options[$key]))
+            return;
+
+        foreach ($required_keys as $nested_key) {
+            if (!isset($options[$key][$nested_key])) {
+                $missing_fields[] = "{$key}[$nested_key]";
+            }
+        }
     }
 
     public function output(): void {

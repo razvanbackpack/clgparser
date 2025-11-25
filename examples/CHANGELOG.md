@@ -2,6 +2,7 @@
 
 ## added
 - Options array to CLGView
+- **Bold**, _italic_, and ++underline++ text support
 
 ## changed
 - Made CLGView code a bit nicer to read

@@ -32,7 +32,7 @@ class ClgParser{
         $headerData = ['type' => 'header', 'level' => 0, 'text' => ''];
 
         $headerData['level'] = strspn($line, '#');
-        $headerData['text'] = htmlspecialchars(trim(substr(ltrim($line), $headerData['level'])));
+        $headerData['text'] = $this->formatInlineText(trim(substr(ltrim($line), $headerData['level'])));
 
         $this->items[] = $headerData;
         $this->currentHeader = $headerData;
@@ -52,9 +52,24 @@ class ClgParser{
 
         $itemData['level'] = strlen($item[1]);  // number of spaces
         $itemData['marker'] = $this->currentHeader['text'];           // -, *, or 1.
-        $itemData['text'] = htmlspecialchars($item[3]);          // actual text
+        $itemData['text'] = $this->formatInlineText($item[3]);
 
         $this->items[] = $itemData;
     }
     #endregion List Parser
+
+    #region Inline Text Formatter
+    private function formatInlineText(string $text): string {
+        $text = htmlspecialchars($text);
+
+        // Bold: **text**
+        $text = preg_replace('/\*\*(.+?)\*\*/', '<strong>$1</strong>', $text);
+        // Italic: _text_
+        $text = preg_replace('/_(.+?)_/', '<em>$1</em>', $text);
+        // Underline: ++text++
+        $text = preg_replace('/\+\+(.+?)\+\+/', '<u>$1</u>', $text);
+
+        return $text;
+    }
+    #endregion Inline Text Formatter
 }
